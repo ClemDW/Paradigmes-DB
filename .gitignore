@@ -1,4 +1,4 @@
 *.csv
 .env
 .pdf
-./TD4/*
+./TD4/
