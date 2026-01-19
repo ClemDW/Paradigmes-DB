@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="toubeelib\praticien\core\Domaine\Entity\Praticien"
+            table="praticien"
+            repository-class="toubeelib\praticien\infra\Repository\RepositoryPatricien">
+
+        <id name="id" type="string" column="id">
+            <generator strategy="NONE"/>
+        </id>
+
+        <field name="nom" type="string" length="48" nullable="false"/>
+
+        <field name="prenom" type="string" length="48" nullable="false"/>
+
+        <field name="ville" type="string" length="48" nullable="false"/>
+
+        <field name="email" type="string" length="128" nullable="false"/>
+
+        <field name="telephone" type="string" length="24" nullable="false"/>
+
+        <field name="rpps_id" type="string" column="rpps_id" length="12" nullable="true"/>
+
+        <field name="organisation" type="boolean" nullable="false">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
+
+        <field name="accepte_nouveau_patient" type="boolean" column="nouveau_patient" nullable="false">
+            <options>
+                <option name="default">1</option>
+            </options>
+        </field>
+
+        <field name="titre" type="string" length="8" nullable="false">
+            <options>
+                <option name="default">Dr.</option>
+            </options>
+        </field>
+
+        <many-to-one field="specialite" target-entity="toubeelib\praticien\core\Domaine\Entity\Specialite">
+            <join-column name="specialite_id" referenced-column-name="id" nullable="false"/>
+        </many-to-one>
+
+        <many-to-one field="structure" target-entity="toubeelib\praticien\core\Domaine\Entity\Structure">
+            <join-column name="structure_id" referenced-column-name="id" nullable="true"/>
+        </many-to-one>
+
+        <many-to-many field="motifsVisite" target-entity="toubeelib\praticien\core\Domaine\Entity\MotifVisite" inversed-by="praticiens">
+            <join-table name="praticien2motif">
+                <join-columns>
+                    <join-column name="praticien_id" referenced-column-name="id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="motif_id" referenced-column-name="id"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+        <many-to-many field="moyensPaiement" target-entity="toubeelib\praticien\core\Domaine\Entity\MoyenPaiement" inversed-by="praticiens">
+            <join-table name="praticien2moyen">
+                <join-columns>
+                    <join-column name="praticien_id" referenced-column-name="id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="moyen_id" referenced-column-name="id"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+    </entity>
+
+</doctrine-mapping>
